@@ -4,16 +4,23 @@ rust:
 sudo: required
 os:
 - linux
-rust:
-- nightly
 script:
 - cargo build --verbose --features "pulseaudio_backend"
 - cargo build --release
 - zip -j spotifyd-`date --iso-8601`-amd64.zip target/release/spotifyd
 before_install:
 - sudo apt-get -qq update
-- sudo apt-get install -y libasound2-dev portaudio19-dev build-essential libpulse-dev libdbus-1-dev
+- sudo apt-get install -y libasound2-dev portaudio19-dev build-essential libpulse-dev
+  libdbus-1-dev
 services:
 - docker
 before_deploy: "./build-release"
-
+deploy:
+  provider: releases
+  api_key:
+    secure: JY+ojprW4s/szhMwoprAWkh38L2QY2c8v5/xt1voY0sUY9BfdueSobHwtCRzqWoE8QzsPS1dEdb6DYjXG3mjbn1gsIU3QEz/thktak3q489Wgfif3D2/XbO5L5i/Zgn8mK5gqwn6x9BEGr5jS8s6Jm+HBYAvu7uo/vCFeGSv4ZrBlk6FM28whjod1K41vprQkNT2rKdewkowF+P55TyqX2Afk4qhZI4bxMZ9FcjiaB7EcpBQU2B6W3iNb2fLty9tB+L2jnVcf+Tgq4DLvEH2ew36pVMOv8IZjEFCSSDaqpcUOT8bhQDiuiIE1cUA3iQGRMwsmAAOsI8qXfoDDnJedOEXKT8+XvUXmATHObcSofrp1oTdxSVufL3PSG9VoKeT6pLs6Zyeodt/TD7L7YFYYzmBFomEPzqhcAIIifJHmaTslB+/T/dGEhGs/8WGxgAdlIBum2l+x0XD9WHTRFAYDE4rxVOjzESlcY8mNb5xJO3W+PyqclYL7uTDCFWpVGsAkDPo2tSg8rTtfaWjmdz/ejCjuVhPfBpmB2yf9y1bgTFvpJoxSAyE78mBkgEObVYLKb5n2beJyvl4po8aaZsvIduGDLjiMIY6w0M2EnQ2OFx+o4GxqL4zoGA+Md1KXpBbQ0tPWX5AdzNF/RBiCfbi0/b1IKup4t+76lRsBVxvkm4=
+  file_glob: true
+  file: "spotifyd*zip"
+  skip_cleanup: true
+  on:
+    repo: Num2/spotifyd
