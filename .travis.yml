@@ -4,6 +4,8 @@ rust:
 sudo: required
 os:
 - linux
+rust:
+- nightly
 script:
 - cargo build --verbose --features "pulseaudio_backend"
 - cargo build --release
