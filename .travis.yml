@@ -7,7 +7,8 @@ os:
 rust:
 - nightly
 script:
-- cargo build --verbose --features "pulseaudio_backend"
+- cargo update
+- cargo build --features "pulseaudio_backend"
 - cargo build --release
 - zip -j spotifyd-`date --iso-8601`-amd64.zip target/release/spotifyd
 before_install:
